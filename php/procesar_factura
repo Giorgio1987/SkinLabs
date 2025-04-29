@@ -1,0 +1,54 @@
+<?php
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Recibir datos del cliente
+    $cliente_nombre = $_POST["cliente_nombre"];
+    $cliente_direccion = $_POST["cliente_direccion"];
+    $cliente_cuit = $_POST["cliente_cuit"];
+
+    // Recibir arrays de items de la factura
+    $item_descripcion = $_POST["item_descripcion"];
+    $item_cantidad = $_POST["item_cantidad"];
+    $item_precio = $_POST["item_precio"];
+
+    // Recibir los totales
+    $subtotal = $_POST["subtotal"];
+    $iva = $_POST["iva"];
+    $total = $_POST["total"];
+
+    // Funciones:
+    // 1. Validar datos recibidos.
+    // 2. Conectar a base de datos.
+    // 3. Insertar datos del cliente en tabla de clientes (de ser necesario).
+    // 4. Insertar datos de factura en tabla de facturas.
+    // 5. Insertar detalles de cada item de la factura en una tabla de líneas de factura.
+    // 6. Realizar cualquier otra logica (Ej,generar numero de factura, etc.).
+    // 7. Redirigir a pagina de confirmacion o mostrar mensaje de exito.
+
+    // Como se muestran datos recibidos:
+    echo "<h2>Datos de la Factura Recibida:</h2>";
+    echo "<p><strong>Nombre del Cliente:</strong> " . htmlspecialchars($cliente_nombre) . "</p>";
+    echo "<p><strong>Dirección:</strong> " . htmlspecialchars($cliente_direccion) . "</p>";
+    echo "<p><strong>DNI:</strong> " . htmlspecialchars($cliente_cuit) . "</p>";
+
+    echo "<h3>Detalle de la Factura:</h3>";
+    if (!empty($item_descripcion)) {
+        echo "<ul>";
+        for ($i = 0; $i < count($item_descripcion); $i++) {
+            echo "<li><strong>Descripción:</strong> " . htmlspecialchars($item_descripcion[$i]) . ", <strong>Cantidad:</strong> " . htmlspecialchars($item_cantidad[$i]) . ", <strong>Precio Unitario:</strong> " . htmlspecialchars($item_precio[$i]) . "</li>";
+        }
+        echo "</ul>";
+    } else {
+        echo "<p>No se agregaron items a la factura.</p>";
+    }
+
+    echo "<p><strong>Subtotal:</strong> " . htmlspecialchars($subtotal) . "</p>";
+    echo "<p><strong>IVA (%):</strong> " . htmlspecialchars($iva) . "%</p>";
+    echo "<p><strong>Total:</strong> " . htmlspecialchars($total) . "</p>";
+
+} else {
+    // Si quieren acceder directamente sin enviar el formulario
+    echo "<p> Ingrese Datos </p>";
+}
+
+?>
