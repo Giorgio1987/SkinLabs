@@ -8,45 +8,83 @@ if (!isset($_SESSION['empleado'])) {
     exit;
 }
 
-// Capturar el servicio desde POST o GET
-$servicio = isset($_POST['servicio']) ? $_POST['servicio'] : (isset($_GET['servicio']) ? $_GET['servicio'] : '');
+// Inicializamos variables
+$mensaje = "";
+$profesionales_arr = [];
+$consultorios_arr = [];
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $nombre = $_POST['nombre'];
-    $telefono = $_POST['telefono'];
-    $dni = $_POST['dni'];
+// Cargar profesionales y consultorios una sola vez
+$res_profesionales = mysqli_query($conexion, "SELECT * FROM profesionales");
+while ($row = mysqli_fetch_assoc($res_profesionales)) {
+    $profesionales_arr[] = $row;
+}
+$res_consultorios = mysqli_query($conexion, "SELECT * FROM consultorios");
+while ($row = mysqli_fetch_assoc($res_consultorios)) {
+    $consultorios_arr[] = $row;
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $nombre = mysqli_real_escape_string($conexion, $_POST['nombre']);
+    $telefono = mysqli_real_escape_string($conexion, $_POST['telefono']);
+    $dni = mysqli_real_escape_string($conexion, $_POST['dni']);
     $fecha = $_POST['fecha'];
     $hora = $_POST['hora'];
+    $servicio = mysqli_real_escape_string($conexion, $_POST['servicio']);
+    $profesional_id = $_POST['profesional_id'];
+    $consultorio_id = $_POST['consultorio_id'];
 
-    $query_check = "SELECT * FROM citas WHERE fecha = '$fecha' AND hora = '$hora'";
-    $result_check = mysqli_query($conexion, $query_check);
+    $fecha_actual = date('Y-m-d');
+    $hora_actual = date('H:i');
 
-    if (mysqli_num_rows($result_check) > 0) {
-        $mensaje = "<div class='alert alert-danger'>¡El horario ya está ocupado! Elegí otro.</div>";
+    if ($fecha < $fecha_actual) {
+        $mensaje = "<div class='alert alert-danger'>No se pueden agendar turnos en el pasado.</div>";
+    } elseif ($fecha == $fecha_actual && $hora <= $hora_actual) {
+        $mensaje = "<div class='alert alert-danger'>No se puede agendar un turno en una hora pasada de hoy.</div>";
     } else {
-        $query_check_persona = "SELECT * FROM citas WHERE fecha = '$fecha' AND dni = '$dni'";
-        $result_check_persona = mysqli_query($conexion, $query_check_persona);
-
-        if (mysqli_num_rows($result_check_persona) > 0) {
-            $mensaje = "<div class='alert alert-danger'>Esa persona ya tiene un turno ese día.</div>";
+        $dia_semana = date('w', strtotime($fecha));
+        if ($dia_semana == 0 || $dia_semana == 6) {
+            $mensaje = "<div class='alert alert-danger'>Solo se permiten turnos de lunes a viernes.</div>";
         } else {
-            $dia_semana = date('w', strtotime($fecha));
-            if ($dia_semana == 0) {
-                $mensaje = "<div class='alert alert-danger'>No se agendan turnos los domingos.</div>";
-            } else {
-                $hora_agendada = strtotime($hora);
-                $hora_inicio = strtotime('09:00');
-                $hora_fin = strtotime('18:00');
+            $hora_ts = strtotime($hora);
+            $inicio_ts = strtotime('09:00');
+            $fin_ts = strtotime('18:00');
 
-                if ($hora_agendada < $hora_inicio || $hora_agendada > $hora_fin) {
-                    $mensaje = "<div class='alert alert-danger'>Horario fuera de rango (09:00 - 18:00).</div>";
+            if ($hora_ts < $inicio_ts || $hora_ts > $fin_ts) {
+                $mensaje = "<div class='alert alert-danger'>Horario fuera del rango permitido (9:00 a 18:00).</div>";
+            } else {
+                // Verificar si el DNI ya tiene un turno ese día
+                $sql_dni = "SELECT * FROM citas WHERE fecha = '$fecha' AND dni = '$dni'";
+                $res_dni = mysqli_query($conexion, $sql_dni);
+
+                if (mysqli_num_rows($res_dni) > 0) {
+                    $mensaje = "<div class='alert alert-danger'>Ya tenés un turno agendado ese día con ese DNI.</div>";
                 } else {
-                    $query = "INSERT INTO citas (nombre, telefono, servicio, fecha, hora, dni) 
-                              VALUES ('$nombre', '$telefono', '$servicio', '$fecha', '$hora', '$dni')";
-                    if (mysqli_query($conexion, $query)) {
-                        $mensaje = "<div class='alert alert-success'>Turno agendado correctamente.</div>";
+                    // Verificar si el profesional ya tiene un turno en esa fecha y hora
+                    $sql_profe = "SELECT * FROM citas WHERE fecha = '$fecha' AND hora = '$hora' AND profesional_id = '$profesional_id'";
+                    $res_profe = mysqli_query($conexion, $sql_profe);
+
+                    if (mysqli_num_rows($res_profe) > 0) {
+                        $mensaje = "<div class='alert alert-danger'>El profesional ya tiene un turno en ese horario.</div>";
                     } else {
-                        $mensaje = "<div class='alert alert-danger'>Error al guardar el turno.</div>";
+                        // Verificar si el consultorio ya tiene un turno a esa hora
+                        $sql_turno = "SELECT * FROM citas WHERE fecha = '$fecha' AND hora = '$hora' AND consultorio_id = '$consultorio_id'";
+                        $res_turno = mysqli_query($conexion, $sql_turno);
+
+                        if (mysqli_num_rows($res_turno) > 0) {
+                            $mensaje = "<div class='alert alert-danger'>Ese horario ya está ocupado en ese consultorio.</div>";
+                        } else {
+                            // Insertar turno
+                            $insert = "INSERT INTO citas 
+                                (nombre, telefono, dni, servicio, profesional_id, consultorio_id, fecha, hora)
+                                VALUES
+                                ('$nombre', '$telefono', '$dni', '$servicio', '$profesional_id', '$consultorio_id', '$fecha', '$hora')";
+
+                            if (mysqli_query($conexion, $insert)) {
+                                $mensaje = "<div class='alert alert-success'>✅ Turno agendado con éxito.</div>";
+                            } else {
+                                $mensaje = "<div class='alert alert-danger'>Error al agendar el turno: " . mysqli_error($conexion) . "</div>";
+                            }
+                        }
                     }
                 }
             }
@@ -59,30 +97,52 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Agendar Turno - Panel Empleados</title>
+    <title>Agendar Turno - SkinLabs</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
 <div class="container py-5">
     <div class="card shadow">
         <div class="card-header bg-success text-white">
-            <h3>📆 Agendar Turno (Empleados)</h3>
+            <h3>📆 Agendar Turno</h3>
         </div>
         <div class="card-body">
-            <?php if (isset($mensaje)) echo $mensaje; ?>
+            <?= $mensaje ?>
             <form method="POST">
                 <div class="mb-3">
                     <label class="form-label">Servicio</label>
                     <select name="servicio" class="form-select" required>
                         <option value="">-- Seleccioná un tratamiento --</option>
-                        <option value="Limpieza Facial" <?= ($servicio == 'Limpieza Facial') ? 'selected' : '' ?>>Limpieza Facial</option>
-                        <option value="Tratamiento Antiacné" <?= ($servicio == 'Tratamiento Antiacné') ? 'selected' : '' ?>>Tratamiento Antiacné</option>
-                        <option value="Masaje Relajante" <?= ($servicio == 'Masaje Relajante') ? 'selected' : '' ?>>Masaje Relajante</option>
+                        <option value="Limpieza Facial">Limpieza Facial</option>
+                        <option value="Tratamiento Antiacné">Tratamiento Antiacné</option>
+                        <option value="Masajes terapéuticos y relajantes">Masajes terapéuticos y relajantes</option>
+                        <option value="Pedicura y manicura">Pedicura y manicura</option>
                     </select>
                 </div>
-
                 <div class="mb-3">
-                    <label class="form-label">Nombre del paciente</label>
+                    <label class="form-label">Profesional</label>
+                    <select name="profesional_id" class="form-select" required>
+                        <option value="">-- Seleccioná --</option>
+                        <?php foreach ($profesionales_arr as $pro): ?>
+                            <option value="<?= $pro['id'] ?>">
+                                <?= htmlspecialchars($pro['nombre']) ?> (<?= htmlspecialchars($pro['especialidad']) ?>)
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Consultorio</label>
+                    <select name="consultorio_id" class="form-select" required>
+                        <option value="">-- Seleccioná --</option>
+                        <?php foreach ($consultorios_arr as $con): ?>
+                            <option value="<?= $con['id'] ?>">
+                                <?= htmlspecialchars($con['nombre']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Nombre y Apellido</label>
                     <input type="text" name="nombre" class="form-control" required>
                 </div>
                 <div class="mb-3">
@@ -94,15 +154,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <input type="text" name="dni" class="form-control" required>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Fecha del turno</label>
+                    <label class="form-label">Fecha</label>
                     <input type="date" name="fecha" class="form-control" required>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Hora del turno</label>
-                    <input type="time" name="hora" class="form-control" required>
+                    <label class="form-label">Hora</label>
+                    <input type="time" name="hora" class="form-control" step="1800" required>
+                    <small class="text-muted">Turnos cada 30 minutos entre 9:00 y 18:00</small>
                 </div>
                 <button type="submit" class="btn btn-success">Agendar turno</button>
-                <a href="index_empleados.php" class="btn btn-secondary">Volver al panel</a>
+                <a href="index_empleados.php" class="btn btn-secondary">Volver</a>
             </form>
         </div>
     </div>
