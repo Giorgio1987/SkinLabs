@@ -145,3 +145,5 @@ ALTER TABLE citas
 ADD CONSTRAINT turno_unico 
 UNIQUE (fecha, hora, profesional_id, consultorio_id);
 
+INSERT INTO profesionales (id, nombre, especialidad) VALUES
+(4,'Laura Torres', 'Pedicura y manicura');
