@@ -1,9 +1,10 @@
 -- Crear y usar la base de datos
-CREATE DATABASE IF NOT EXISTS esba;
+DROP DATABASE IF EXISTS esba;
+CREATE DATABASE esba;
 USE esba;
 
 -- Tabla: pacientes
-CREATE TABLE IF NOT EXISTS pacientes (
+CREATE TABLE pacientes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     dni VARCHAR(15) UNIQUE,
     nombre VARCHAR(100),
@@ -13,20 +14,20 @@ CREATE TABLE IF NOT EXISTS pacientes (
 );
 
 -- Tabla: profesionales
-CREATE TABLE IF NOT EXISTS profesionales (
+CREATE TABLE profesionales (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100),
     especialidad VARCHAR(100)
 );
 
 -- Tabla: consultorios
-CREATE TABLE IF NOT EXISTS consultorios (
+CREATE TABLE consultorios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100)
 );
 
 -- Tabla: turnos_profesionales (relación entre profesional, consultorio, día y horario)
-CREATE TABLE IF NOT EXISTS turnos_profesionales (
+CREATE TABLE turnos_profesionales (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_profesional INT NOT NULL,
     id_consultorio INT NOT NULL,
@@ -38,7 +39,7 @@ CREATE TABLE IF NOT EXISTS turnos_profesionales (
 );
 
 -- Tabla: tratamientos
-CREATE TABLE IF NOT EXISTS tratamientos (
+CREATE TABLE tratamientos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_paciente INT,
     id_profesional INT,
@@ -50,8 +51,8 @@ CREATE TABLE IF NOT EXISTS tratamientos (
     FOREIGN KEY (id_profesional) REFERENCES profesionales(id)
 );
 
--- Tabla: citas
-CREATE TABLE IF NOT EXISTS citas (
+-- Tabla: citas (corregida, sin restricción anterior, con restricción nueva)
+CREATE TABLE citas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100),
     telefono VARCHAR(20),
@@ -59,8 +60,9 @@ CREATE TABLE IF NOT EXISTS citas (
     fecha DATE,
     hora TIME,
     dni VARCHAR(15),
-    UNIQUE (nombre, fecha),
-    UNIQUE (fecha, hora)
+    consultorio_id INT NOT NULL,
+    profesional_id INT NOT NULL,
+    CONSTRAINT turno_unico UNIQUE (fecha, hora, profesional_id, consultorio_id)
 );
 
 -- Trigger: Evitar agendar en fechas pasadas
@@ -76,14 +78,14 @@ END;
 DELIMITER ;
 
 -- Tabla: empleados
-CREATE TABLE IF NOT EXISTS empleados (
+CREATE TABLE empleados (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario VARCHAR(50) UNIQUE NOT NULL,
     clave VARCHAR(255) NOT NULL -- Contraseña hasheada
 );
 
 -- Tabla: facturas
-CREATE TABLE IF NOT EXISTS facturas (
+CREATE TABLE facturas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100),
     dni VARCHAR(20),
@@ -95,7 +97,7 @@ CREATE TABLE IF NOT EXISTS facturas (
     metodo_pago VARCHAR(50)
 );
 
--- Insertar empleados (admin por defecto)
+-- Insertar empleado admin
 INSERT INTO empleados (usuario, clave)
 VALUES ('admin', SHA2('1234', 256));
 
@@ -109,7 +111,8 @@ VALUES
 INSERT INTO profesionales (id, nombre, especialidad) VALUES
 (1, 'Dra. Ana Pérez', 'Dermatóloga'),
 (2, 'Lic. Martín Gómez', 'Kinesiólogo'),
-(3, 'Dra. Laura Sánchez', 'Esteticista');
+(3, 'Dra. Laura Sánchez', 'Esteticista'),
+(4, 'Laura Torres', 'Pedicura y manicura');
 
 -- Insertar consultorios
 INSERT INTO consultorios (id, nombre) VALUES
@@ -130,20 +133,10 @@ VALUES
 (1, 1, '2025-04-01', 'Limpieza facial profunda', 'Piel sensible, recomendación de productos suaves', '2025-04-08'),
 (2, 2, '2025-04-02', 'Tratamiento antiacné', 'Buena respuesta al tratamiento, seguir control', '2025-04-10');
 
--- Insertar citas
-INSERT INTO citas (nombre, telefono, servicio, fecha, hora, dni) VALUES
-('Carla Ramírez', '1144556677', 'Limpieza facial', '2025-12-01', '10:00', '32165498'),
-('Luis González', '1199887766', 'Tratamiento antiacné', '2025-12-03', '14:30', '30123456'),
-('Sofía Álvarez', '1133445566', 'Masajes relajantes', '2025-12-05', '09:00', '33876543'),
-('Mariano Pérez', '1122334455', 'Manicura completa', '2025-12-10', '11:15', '32987654'),
-('Natalia Suárez', '1177665544', 'Consulta dermatológica', '2025-12-15', '13:00', '31234567');
-ALTER TABLE citas ADD consultorio_id INT NOT NULL;
-DESCRIBE citas;
-ALTER TABLE citas
-ADD COLUMN profesional_id INT NOT NULL;
-ALTER TABLE citas 
-ADD CONSTRAINT turno_unico 
-UNIQUE (fecha, hora, profesional_id, consultorio_id);
-
-INSERT INTO profesionales (id, nombre, especialidad) VALUES
-(4,'Laura Torres', 'Pedicura y manicura');
+-- Insertar citas de prueba
+INSERT INTO citas (nombre, telefono, servicio, fecha, hora, dni, consultorio_id, profesional_id) VALUES
+('Carla Ramírez', '1144556677', 'Limpieza facial', '2025-12-01', '10:00:00', '32165498', 1, 1),
+('Luis González', '1199887766', 'Tratamiento antiacné', '2025-12-03', '14:30:00', '30123456', 2, 2),
+('Sofía Álvarez', '1133445566', 'Masajes relajantes', '2025-12-05', '09:00:00', '33876543', 3, 3),
+('Mariano Pérez', '1122334455', 'Manicura completa', '2025-12-10', '11:15:00', '32987654', 3, 4),
+('Natalia Suárez', '1177665544', 'Consulta dermatológica', '2025-12-15', '13:00:00', '31234567', 1, 1);
