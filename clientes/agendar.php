@@ -1,20 +1,18 @@
 <?php
+date_default_timezone_set('America/Argentina/Buenos_Aires');
+
 include("../php/conexion.php");
 
-// Inicializamos variables
+// Inicializamos mensaje
 $mensaje = "";
-$profesionales_arr = [];
-$consultorios_arr = [];
 
-// Cargar profesionales y consultorios una sola vez
-$res_profesionales = mysqli_query($conexion, "SELECT * FROM profesionales");
-while ($row = mysqli_fetch_assoc($res_profesionales)) {
-    $profesionales_arr[] = $row;
-}
-$res_consultorios = mysqli_query($conexion, "SELECT * FROM consultorios");
-while ($row = mysqli_fetch_assoc($res_consultorios)) {
-    $consultorios_arr[] = $row;
-}
+// Mapeo servicios con sus profesionales
+$mapa_profesionales = [
+    'Limpieza Facial' => 'Esteticista',
+    'Tratamiento Antiacné' => 'Dermatóloga',
+    'Masajes terapéuticos y relajantes' => 'Kinesiólogo',
+    'Pedicura y manicura' => 'Pedicura y manicura'
+];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nombre = mysqli_real_escape_string($conexion, $_POST['nombre']);
@@ -23,17 +21,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $fecha = $_POST['fecha'];
     $hora = $_POST['hora'];
     $servicio = mysqli_real_escape_string($conexion, $_POST['servicio']);
-    $profesional_id = $_POST['profesional_id'];
-    $consultorio_id = $_POST['consultorio_id'];
+    
+    $fecha_hora_turno = DateTime::createFromFormat('Y-m-d H:i', "$fecha $hora");
+    $fecha_hora_actual = new DateTime();
+ 
+     if ($fecha_hora_turno < $fecha_hora_actual) {
+      $mensaje = "<div class='alert alert-danger'>No se pueden agendar turnos en el pasado.</div>";
+      }
 
-    $fecha_actual = date('Y-m-d');
-    $hora_actual = date('H:i');
-
-    if ($fecha < $fecha_actual) {
-        $mensaje = "<div class='alert alert-danger'>No se pueden agendar turnos en el pasado.</div>";
-    } elseif ($fecha == $fecha_actual && $hora <= $hora_actual) {
-        $mensaje = "<div class='alert alert-danger'>No se puede agendar un turno en una hora pasada de hoy.</div>";
-    } else {
+    else {
         $dia_semana = date('w', strtotime($fecha));
         if ($dia_semana == 0 || $dia_semana == 6) {
             $mensaje = "<div class='alert alert-danger'>Solo se permiten turnos de lunes a viernes.</div>";
@@ -52,30 +48,54 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (mysqli_num_rows($res_dni) > 0) {
                     $mensaje = "<div class='alert alert-danger'>Ya tenés un turno agendado ese día con ese DNI.</div>";
                 } else {
-                    // Verificar si el profesional ya tiene un turno en esa fecha y hora
-                    $sql_profe = "SELECT * FROM citas WHERE fecha = '$fecha' AND hora = '$hora' AND profesional_id = '$profesional_id'";
-                    $res_profe = mysqli_query($conexion, $sql_profe);
-
-                    if (mysqli_num_rows($res_profe) > 0) {
-                        $mensaje = "<div class='alert alert-danger'>El profesional ya tiene un turno en ese horario.</div>";
+                    // Obtener profesional adecuado según el servicio
+                    $especialidad = $mapa_profesionales[$servicio] ?? '';
+                    $sql_prof = "SELECT * FROM profesionales WHERE especialidad = '$especialidad' LIMIT 1";
+                    $res_prof = mysqli_query($conexion, $sql_prof);
+                    $profe = mysqli_fetch_assoc($res_prof);
+                    if (!$profe) {
+                        $mensaje = "<div class='alert alert-danger'>No se encontró un profesional para el tratamiento.</div>";
                     } else {
-                        // Verificar si el consultorio ya tiene un turno a esa hora
-                        $sql_turno = "SELECT * FROM citas WHERE fecha = '$fecha' AND hora = '$hora' AND consultorio_id = '$consultorio_id'";
-                        $res_turno = mysqli_query($conexion, $sql_turno);
+                        $profesional_id = $profe['id'];
 
-                        if (mysqli_num_rows($res_turno) > 0) {
-                            $mensaje = "<div class='alert alert-danger'>Ese horario ya está ocupado en ese consultorio.</div>";
+                        // Verificar si el profesional ya tiene un turno en esa fecha y hora
+                        $sql_profe = "SELECT * FROM citas WHERE fecha = '$fecha' AND hora = '$hora' AND profesional_id = '$profesional_id'";
+                        $res_profe = mysqli_query($conexion, $sql_profe);
+
+                        if (mysqli_num_rows($res_profe) > 0) {
+                            $mensaje = "<div class='alert alert-danger'>El profesional ya tiene un turno en ese horario.</div>";
                         } else {
-                            // Insertar turno
-                            $insert = "INSERT INTO citas 
-                                (nombre, telefono, dni, servicio, profesional_id, consultorio_id, fecha, hora)
-                                VALUES
-                                ('$nombre', '$telefono', '$dni', '$servicio', '$profesional_id', '$consultorio_id', '$fecha', '$hora')";
+                            // Buscar consultorios libres
+                            $sql_disponibles = "
+                                SELECT id FROM consultorios
+                                WHERE id NOT IN (
+                                    SELECT consultorio_id FROM citas WHERE fecha = '$fecha' AND hora = '$hora'
+                                )
+                            ";
+                            $res_consultorios = mysqli_query($conexion, $sql_disponibles);
 
-                            if (mysqli_query($conexion, $insert)) {
-                                $mensaje = "<div class='alert alert-success'>✅ Turno agendado con éxito.</div>";
+                            $consultorios_disponibles = [];
+                            while ($row = mysqli_fetch_assoc($res_consultorios)) {
+                                $consultorios_disponibles[] = $row['id'];
+                            }
+
+                            if (count($consultorios_disponibles) === 0) {
+                                $mensaje = "<div class='alert alert-danger'>No hay consultorios disponibles para esa hora.</div>";
                             } else {
-                                $mensaje = "<div class='alert alert-danger'>Error al agendar el turno: " . mysqli_error($conexion) . "</div>";
+                                // Seleccionar consultorio aleatorio
+                                $consultorio_id = $consultorios_disponibles[array_rand($consultorios_disponibles)];
+
+                                // Insertar turno
+                                $insert = "INSERT INTO citas 
+                                    (nombre, telefono, dni, servicio, profesional_id, consultorio_id, fecha, hora)
+                                    VALUES
+                                    ('$nombre', '$telefono', '$dni', '$servicio', '$profesional_id', '$consultorio_id', '$fecha', '$hora')";
+
+                                if (mysqli_query($conexion, $insert)) {
+                                    $mensaje = "<div class='alert alert-success'>✅ Turno agendado con éxito.</div>";
+                                } else {
+                                    $mensaje = "<div class='alert alert-danger'>Error al agendar el turno: " . mysqli_error($conexion) . "</div>";
+                                }
                             }
                         }
                     }
@@ -103,35 +123,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?= $mensaje ?>
             <form method="POST">
                 <div class="mb-3">
-                    <label class="form-label">Servicio</label>
+                    <label class="form-label">Tratamiento</label>
                     <select name="servicio" class="form-select" required>
                         <option value="">-- Seleccioná un tratamiento --</option>
                         <option value="Limpieza Facial">Limpieza Facial</option>
                         <option value="Tratamiento Antiacné">Tratamiento Antiacné</option>
                         <option value="Masajes terapéuticos y relajantes">Masajes terapéuticos y relajantes</option>
                         <option value="Pedicura y manicura">Pedicura y manicura</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Profesional</label>
-                    <select name="profesional_id" class="form-select" required>
-                        <option value="">-- Seleccioná --</option>
-                        <?php foreach ($profesionales_arr as $pro): ?>
-                            <option value="<?= $pro['id'] ?>">
-                                <?= htmlspecialchars($pro['nombre']) ?> (<?= htmlspecialchars($pro['especialidad']) ?>)
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Consultorio</label>
-                    <select name="consultorio_id" class="form-select" required>
-                        <option value="">-- Seleccioná --</option>
-                        <?php foreach ($consultorios_arr as $con): ?>
-                            <option value="<?= $con['id'] ?>">
-                                <?= htmlspecialchars($con['nombre']) ?>
-                            </option>
-                        <?php endforeach; ?>
                     </select>
                 </div>
                 <div class="mb-3">
