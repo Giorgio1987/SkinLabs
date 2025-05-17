@@ -67,7 +67,7 @@ Editá el archivo de conexión a la base de datos (`config.php`, `db.php` o simi
 $host = "localhost";
 $usuario = "root";
 $contrasena = "";
-$baseDeDatos = "skinlabs";
+$baseDeDatos = "esba";
 ```
 
 > ⚠️ Por defecto, XAMPP usa el usuario `root` sin contraseña.
