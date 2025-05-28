@@ -16,12 +16,13 @@ header("Pragma: no-cache");
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/hero.css"> 
     <link rel="icon" href="assets/img/favicon.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="overlay">
-        <div class="logo">🌿 SkinLabs</div>
+        <div class="logo">SkinLabs</div>
         <div class="hero">
-            <h1 class="mb-3">Bienvenido a tu espacio de bienestar</h1>
+            <h1 class="titulo-bienvenida">Bienvenido a tu espacio de bienestar</h1>
             <p class="lead">Estética profesional con alma</p>
 
             <div class="d-flex justify-content-center gap-4 flex-wrap">
