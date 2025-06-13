@@ -1,4 +1,5 @@
 <?php
+
 date_default_timezone_set('America/Argentina/Buenos_Aires');
 session_start();
 include("../php/conexion.php");
@@ -92,6 +93,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+
+
+// agegue aca
+
+$horarios_disponibles = [];
+$hora_inicio = strtotime('09:00');
+$hora_fin = strtotime('18:00');
+
+for ($hora = $hora_inicio; $hora <= $hora_fin; $hora += 1800) {
+    $horarios_disponibles[] = date('H:i', $hora);
+}
+
+$horas_ocupadas = [];
+if (!empty($_POST['fecha']) && !empty($_POST['profesional_id']) && !empty($_POST['consultorio_id'])) {
+    $fecha = $_POST['fecha'];
+    $prof_id = $_POST['profesional_id'];
+    $cons_id = $_POST['consultorio_id'];
+
+    $res_ocupadas = mysqli_query($conexion, "
+        SELECT hora FROM citas
+        WHERE fecha = '$fecha' 
+        AND (profesional_id = '$prof_id' OR consultorio_id = '$cons_id')
+    ");
+
+    while ($row = mysqli_fetch_assoc($res_ocupadas)) {
+        $horas_ocupadas[] = $row['hora'];
+    }
+}
+
+// fin de la agregada
 ?>
 
 <!DOCTYPE html>
@@ -144,25 +175,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Nombre y Apellido</label>
-                    <input type="text" name="nombre" class="form-control" required>
+                    <!-- <input type="text" name="nombre" class="form-control" required> -->
+                     <input type="text" name="nombre" class="form-control" required value="<?= isset($_POST['nombre']) ? htmlspecialchars($_POST['nombre']) : '' ?>">
+
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Teléfono</label>
-                    <input type="text" name="telefono" class="form-control" required>
+                    <!-- <input type="text" name="telefono" class="form-control" required> -->
+                    <input type="text" name="telefono" class="form-control" required value="<?= isset($_POST['telefono']) ? htmlspecialchars($_POST['telefono']) : '' ?>">
+
                 </div>
                 <div class="mb-3">
                     <label class="form-label">DNI</label>
-                    <input type="text" name="dni" class="form-control" required>
+                    <!-- <input type="text" name="dni" class="form-control" required> -->
+                     <input type="text" name="dni" class="form-control" required value="<?= isset($_POST['dni']) ? htmlspecialchars($_POST['dni']) : '' ?>">
+
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Fecha</label>
-                    <input type="date" name="fecha" class="form-control" required>
+                    <!-- <input type="date" name="fecha" class="form-control" required> -->
+                     <input type="date" name="fecha" class="form-control" required value="<?= isset($_POST['fecha']) ? htmlspecialchars($_POST['fecha']) : '' ?>">
+
                 </div>
+
                 <div class="mb-3">
+                    <label class="form-label">Hora</label>
+                    <select name="hora" class="form-select" required>
+                        <option value="">-- Seleccioná una hora --</option>
+                        <?php foreach ($horarios_disponibles as $hora_opcion): ?>
+                            <option value="<?= $hora_opcion ?>"
+                                <?= in_array($hora_opcion, $horas_ocupadas) ? 'disabled' : '' ?>
+                                <?= isset($_POST['hora']) && $_POST['hora'] == $hora_opcion ? 'selected' : '' ?>>
+                            <?= $hora_opcion ?> <?= in_array($hora_opcion, $horas_ocupadas) ? '(Ocupado)' : '' ?>
+                            </option>
+                        <?php endforeach; ?>
+                 </select>
+                </div>
+
+               <!--  <div class="mb-3">
                     <label class="form-label">Hora</label>
                     <input type="time" name="hora" class="form-control" step="1800" required>
                     <small class="text-muted">Turnos cada 30 minutos entre 9:00 y 18:00</small>
-                </div>
+                </div> -->
                 <button type="submit" class="btn btn-success">Agendar turno</button>
                 <a href="index_empleados.php" class="btn btn-secondary">Volver</a>
             </form>

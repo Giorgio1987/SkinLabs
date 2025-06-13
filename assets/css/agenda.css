@@ -1,0 +1,16 @@
+/* Aumenta el espacio entre las filas del calendario semanal */
+.fc-timegrid-slot {
+    border-bottom: 6px solid #f0f0f0; /* crea separación visual entre filas */
+}
+
+/* Opcional: mejora visual de los eventos */
+.fc-event {
+    margin-top: 3px;
+    margin-bottom: 3px;
+    border-radius: 4px;
+    padding: 2px;
+}
+
+body {
+  background-color: yellow !important;
+}
