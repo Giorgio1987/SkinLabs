@@ -11,7 +11,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/agenda.css">
 
-
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 
@@ -46,24 +45,12 @@
 
                             <div class="col-md-3">
                                 <label class="form-label">Profesional</label>
-                                <select name="profesional" class="form-select">
-                                    <option value="">Todos</option>
-                                    <option value="Ana" <?= ($_GET['profesional'] ?? '') == 'Ana' ? 'selected' : '' ?>>Ana</option>
-                                    <option value="Carlos" <?= ($_GET['profesional'] ?? '') == 'Carlos' ? 'selected' : '' ?>>Carlos</option>
-                                    <option value="María" <?= ($_GET['profesional'] ?? '') == 'María' ? 'selected' : '' ?>>María</option>
-                                    <option value="Pedro" <?= ($_GET['profesional'] ?? '') == 'Pedro' ? 'selected' : '' ?>>Pedro</option>
-                                </select>
+                                <select name="profesional" class="form-select" data-selected="<?= $_GET['profesional'] ?? '' ?>"></select>
                             </div>
 
                             <div class="col-md-3">
                                 <label class="form-label">Servicio</label>
-                                <select name="servicio" class="form-select">
-                                    <option value="">Todos</option>
-                                    <option value="Limpieza facial" <?= ($_GET['servicio'] ?? '') == 'Limpieza facial' ? 'selected' : '' ?>>Limpieza facial</option>
-                                    <option value="Masaje relajante" <?= ($_GET['servicio'] ?? '') == 'Masaje relajante' ? 'selected' : '' ?>>Masaje relajante</option>
-                                    <option value="Peeling" <?= ($_GET['servicio'] ?? '') == 'Peeling' ? 'selected' : '' ?>>Peeling</option>
-                                    <option value="Radiofrecuencia" <?= ($_GET['servicio'] ?? '') == 'Radiofrecuencia' ? 'selected' : '' ?>>Radiofrecuencia</option>
-                                </select>
+                                <select name="servicio" class="form-select" data-selected="<?= $_GET['servicio'] ?? '' ?>"></select>
                             </div>
 
                             <div class="col-md-2">
