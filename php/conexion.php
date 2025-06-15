@@ -3,7 +3,7 @@ $host = "127.0.0.1";       // mejor usar IP directa
 $usuario = "root";         // usuario MySQL
 $clave = "";               // contraseña (vacía por defecto en XAMPP)
 $bd = "esba";              // nombre de la base de datos
-$puerto = 3307;            // puerto correcto de MySQL en tu XAMPP
+$puerto = 3306;            // puerto actual de MySQL según XAMPP
 
 // Crear conexión
 $conexion = new mysqli($host, $usuario, $clave, $bd, $puerto);
