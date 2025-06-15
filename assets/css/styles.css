@@ -762,6 +762,48 @@ h1, h2, h3, h4, h5, h6 {
     }
 }
 
+/* Utility Classes */
+.text-gradient {
+    background: linear-gradient(135deg, var(--coral-salmon), var(--rosa-empolvado));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.bg-glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.shadow-custom {
+    box-shadow: 0 10px 40px var(--sombra-media);
+}
+
+/* Scroll behavior */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--purpura-muy-oscuro);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, var(--coral-salmon), var(--rosa-empolvado));
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, var(--rosa-empolvado), var(--coral-salmon));
+}
+
+
 /* Responsive Design */
 @media (max-width: 1200px) {
     .hero-title {
@@ -889,43 +931,8 @@ h1, h2, h3, h4, h5, h6 {
     }
 }
 
-/* Utility Classes */
-.text-gradient {
-    background: linear-gradient(135deg, var(--coral-salmon), var(--rosa-empolvado));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.bg-glass {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.shadow-custom {
-    box-shadow: 0 10px 40px var(--sombra-media);
-}
-
-/* Scroll behavior */
-html {
-    scroll-behavior: smooth;
-}
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-    width: 8px;
-}
-
-::-webkit-scrollbar-track {
-    background: var(--purpura-muy-oscuro);
-}
-
-::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, var(--coral-salmon), var(--rosa-empolvado));
-    border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, var(--rosa-empolvado), var(--coral-salmon));
+@media (min-width: 769px) and (max-width: 992px) {
+    .hero-section {
+        text-align: center !important;
+    }
 }

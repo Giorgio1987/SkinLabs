@@ -25,7 +25,7 @@
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-light fixed-top">
     <div class="container">
-      <a class="navbar-brand" href="#" style="position: relative; display: block; height: 50px;">
+      <a class="navbar-brand" href="#inicio" style="position: relative; display: block; height: 50px;">
         <img src="../assets/img/logo.png" alt="SkinLabs logo"
             style="position: absolute; top: 50%; left: 0; transform: translateY(-50%) scale(1.5); height: 80px;">
       </a>
