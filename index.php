@@ -38,21 +38,6 @@ header("Pragma: no-cache");
     <title>SkinLabs - Estética Profesional | Belleza & Bienestar</title>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div class="loading-screen" id="loadingScreen">
-        <div class="loading-content">
-            <div class="loading-logo">
-                <span class="logo-text">SkinLabs</span>
-                <div class="loading-dots">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-            </div>
-            <div class="loading-text">Preparando tu experiencia de belleza...</div>
-        </div>
-    </div>
-
     <!-- Background Elements -->
     <div class="background-elements">
         <div class="floating-element element-1"></div>
