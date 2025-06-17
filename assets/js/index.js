@@ -3,39 +3,18 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeApp();
 
     function initializeApp() {
-        // Show loading screen
-        showLoadingScreen();
+        // Initialize components
+        initializeParticles();
+        initializeTime();
+        initializeQuotes();
+        initializeInteractions();
+        initializeAnimations();
+        initializeAccessibility();
         
-        // Initialize components after loading
+        // Show welcome modal after everything loads
         setTimeout(() => {
-            hideLoadingScreen();
-            initializeParticles();
-            initializeTime();
-            initializeQuotes();
-            initializeInteractions();
-            initializeAnimations();
-            initializeAccessibility();
-            
-            // Show welcome modal after everything loads
-            setTimeout(() => {
-                showWelcomeModal();
-            }, 1000);
-        }, 2500);
-    }
-
-    // Loading Screen Management
-    function showLoadingScreen() {
-        const loadingScreen = document.getElementById('loadingScreen');
-        loadingScreen.style.display = 'flex';
-    }
-
-    function hideLoadingScreen() {
-        const loadingScreen = document.getElementById('loadingScreen');
-        loadingScreen.classList.add('hidden');
-        
-        setTimeout(() => {
-            loadingScreen.style.display = 'none';
-        }, 500);
+            showWelcomeModal();
+        }, 1000);
     }
 
     // Particles System

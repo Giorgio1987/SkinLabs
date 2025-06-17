@@ -14,14 +14,17 @@ header("Pragma: no-cache");
     <meta name="description" content="SkinLabs - Tu centro de estética profesional. Tratamientos de belleza personalizados para realzar tu belleza natural.">
     
     <!-- Fonts -->
+     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Parisienne&display=swap" rel="stylesheet">
+
     <!-- Styles -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="assets/css/index.css?v=skinlabs3">
+    <link rel="stylesheet" href="assets/css/index.css">
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="assets/img/favicon_v2.png">
@@ -35,21 +38,6 @@ header("Pragma: no-cache");
     <title>SkinLabs - Estética Profesional | Belleza & Bienestar</title>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div class="loading-screen" id="loadingScreen">
-        <div class="loading-content">
-            <div class="loading-logo">
-                <span class="logo-text">SkinLabs</span>
-                <div class="loading-dots">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-            </div>
-            <div class="loading-text">Preparando tu experiencia de belleza...</div>
-        </div>
-    </div>
-
     <!-- Background Elements -->
     <div class="background-elements">
         <div class="floating-element element-1"></div>
@@ -76,7 +64,7 @@ header("Pragma: no-cache");
         <!-- Logo Section -->
         <div class="logo-section">
             <div class="logo-container d-flex align-items-center justify-content-center flex-column">
-                <img src="assets/img/logo.png" alt="SkinLabs logo" style="max-height: 250px; width: auto; margin-bottom: 0;">
+                <img src="assets/img/logo.png" alt="SkinLabs logo" style="max-height: 280px; margin-bottom: -50px; margin-top: 0px;">
             </div>
         </div>
 
@@ -84,14 +72,10 @@ header("Pragma: no-cache");
         <div class="hero-section">
             <div class="hero-content">
                 <h1 class="hero-title">
-                    <span class="title-line-1">Bienvenido a tu espacio de</span>
-                    <span class="title-line-3 gradient-text"><i>Bienestar</i></span>
+                    <span class="animated-gradient-text">Bienvenido a tu espacio de bienestar</span>
                 </h1>
-                
-                <p class="hero-description">
-                    Donde la belleza se encuentra con la ciencia, y cada tratamiento 
-                    es una experiencia única diseñada especialmente para ti.
-                </p>
+               
+                <p class="elegant-phrase">Donde la belleza se encuentra con la ciencia, y cada tratamiento es una experiencia única diseñada especialmente para ti.</p>
 
                 <!-- Action Buttons -->
                 <div class="action-buttons">

@@ -17,7 +17,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-  <link rel="stylesheet" href="../assets/css/styles.css?v=cosmico3" />
+  <link rel="stylesheet" href="../assets/css/styles.css" />
   <title>SkinLabs - Belleza & Bienestar</title>
 </head>
 <body>
@@ -25,7 +25,7 @@
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-light fixed-top">
     <div class="container">
-      <a class="navbar-brand" href="#" style="position: relative; display: block; height: 50px;">
+      <a class="navbar-brand" href="#inicio" style="position: relative; display: block; height: 50px;">
         <img src="../assets/img/logo.png" alt="SkinLabs logo"
             style="position: absolute; top: 50%; left: 0; transform: translateY(-50%) scale(1.5); height: 80px;">
       </a>
