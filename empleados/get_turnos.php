@@ -13,17 +13,17 @@ try {
     // Construir consulta base
     $query = "SELECT c.id, TIME_FORMAT(c.hora, '%H:%i:%s') as hora, c.fecha, 
                      c.nombre AS cliente, c.servicio, 
-                     p.nombre AS profesional, p.id_profesional, p.color,
+                     p.nombre AS profesional, p.id, p.color,
                      cs.nombre AS consultorio
               FROM citas c
-              JOIN profesionales p ON c.profesional_id = p.id_profesional
-              JOIN consultorios cs ON c.consultorio_id = cs.id_consultorio
+              JOIN profesionales p ON c.profesional_id = p.id
+              JOIN consultorios cs ON c.consultorio_id = cs.id
               WHERE 1=1";
     
     // Aplicar filtros
     if (!empty($_GET['profesional'])) {
         $profesionalId = $conexion->real_escape_string($_GET['profesional']);
-        $query .= " AND p.id_profesional = '$profesionalId'";
+        $query .= " AND p.id = '$profesionalId'";
     }
     
     if (!empty($_GET['servicio'])) {
@@ -36,6 +36,13 @@ try {
         $query .= " AND c.fecha = '$fecha'";
     }
 
+        //  Nuevo filtro por cliente 
+    if (!empty($_GET['cliente'])) {
+        $cliente = $conexion->real_escape_string($_GET['cliente']);
+        $query .= " AND (c.nombre LIKE '%$cliente%' OR c.dni LIKE '%$cliente%')";
+        
+    }
+
     $result = $conexion->query($query);
     
     if (!$result) {
@@ -46,7 +53,7 @@ try {
     while ($row = $result->fetch_assoc()) {
         $turnos[] = [
             'id' => $row['id'],
-            'title' => $row['profesional'] . " - " . $row['servicio'],
+           'title' => $row['cliente'] . " - " . $row['servicio'],
             'start' => $row['fecha'] . "T" . $row['hora'],
             'color' => $row['color'] ?? '#1976D2',
             'extendedProps' => [
@@ -54,7 +61,7 @@ try {
                 'consultorio' => $row['consultorio'],
                 'servicio' => $row['servicio'],
                 'profesional' => $row['profesional'],
-                'profesional_id' => $row['id_profesional']
+                'profesional_id' => $row['id']
             ]
         ];
     }

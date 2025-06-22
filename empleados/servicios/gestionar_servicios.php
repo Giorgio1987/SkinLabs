@@ -9,7 +9,7 @@ if (!isset($_SESSION['empleado'])) {
 <html lang="es" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8">
-    <title>Gestionar Profesionales - SkinLabs</title>
+    <title>Gestionar Servicios - SkinLabs</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
@@ -23,9 +23,9 @@ if (!isset($_SESSION['empleado'])) {
 
 <div class="container py-5">
     <div class="d-flex justify-content-between mb-3">
-        <h4>Profesionales registrados</h4>
-        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalAgregar">
-            <i class="bi bi-person-plus"></i> Nuevo profesional
+        <h4>Servicios registrados</h4>
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalAgregarServicio">
+            <i class="bi bi-plus-circle"></i> Nuevo servicio
         </button>
     </div>
 
@@ -33,13 +33,13 @@ if (!isset($_SESSION['empleado'])) {
         <thead class="table-light">
             <tr>
                 <th>Nombre</th>
-                <th>Especialidad</th>
-                <th>Color</th>
+                <th>Descripción</th>
+                <th>Activo</th>
                 <th>Acciones</th>
             </tr>
         </thead>
-        <tbody id="tablaProfesionales">
-            <!-- Contenido cargado por JS -->
+        <tbody id="tablaServicios">
+            <!-- JS carga aquí -->
         </tbody>
     </table>
 
@@ -48,11 +48,11 @@ if (!isset($_SESSION['empleado'])) {
     </a>
 </div>
 
-<?php include 'modal_agregar.php'; ?>
-<?php include 'modal_editar.php'; ?>
-<?php include 'modal_eliminar.php'; ?>
+<?php include 'modal_agregar_servicio.php'; ?>
+<?php include 'modal_editar_servicio.php'; ?>
+<?php include 'modal_eliminar_servicio.php'; ?>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../../assets/js/editar_profesional.js"></script>
+<script src="../../assets/js/editar_servicio.js"></script>
 </body>
 </html>

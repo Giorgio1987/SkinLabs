@@ -17,8 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 <span class="badge" style="background-color: ${p.color};">${p.color}</span>
               </td>
               <td>
-                <button class="btn btn-sm btn-warning btn-editar" data-id="${p.id}"><i class="bi bi-pencil-fill"></i></button>
-                <button class="btn btn-sm btn-danger btn-eliminar" data-id="${p.id}" data-nombre="${p.nombre}">
+                <button class="btn btn-sm btn-warning btn-editar" data-id="${p.id_profesional}"><i class="bi bi-pencil-fill"></i></button>
+                <button class="btn btn-sm btn-danger btn-eliminar" data-id="${p.id_profesional}" data-nombre="${p.nombre}">
                   <i class="bi bi-trash-fill"></i>
                 </button>
               </td>
@@ -74,69 +74,24 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Envío del formulario de eliminación con AJAX
-  // Envío del formulario de eliminación con AJAX
   document.getElementById('formEliminarProfesional').addEventListener('submit', async function (e) {
     e.preventDefault();
 
     const formData = new FormData(this);
-    const modal = document.getElementById('modalEliminar');
-    const errorDiv = document.getElementById('errorEliminar');
-    const btnEliminar = document.getElementById('btnConfirmarEliminar');
+    const response = await fetch('eliminar_profesional.php', {
+      method: 'POST',
+      body: formData
+    });
 
-    // Mostrar "Procesando..." y desactivar botón
-    btnEliminar.disabled = true;
-    const originalText = btnEliminar.innerHTML;
-    btnEliminar.innerHTML = 'Procesando...';
+    const result = await response.json();
 
-    try {
-      const response = await fetch('eliminar_profesional.php', {
-        method: 'POST',
-        body: formData
-      });
-
-      const result = await response.json();
-
-      if (result.success) {
-        bootstrap.Modal.getInstance(modal).hide();
-        cargarProfesionales();
-        errorDiv.classList.add('d-none');
-        errorDiv.textContent = '';
-        btnEliminar.disabled = false;
-        btnEliminar.innerHTML = originalText;
-      } else {
-        // Mostrar error, ocultar botón, cerrar modal después
-        errorDiv.classList.remove('d-none');
-        errorDiv.textContent = result.error || 'Error desconocido al eliminar.';
-
-        btnEliminar.classList.add('d-none');
-
-        setTimeout(() => {
-          bootstrap.Modal.getInstance(modal).hide();
-        }, 3000);
-      }
-
-    } catch (error) {
-      errorDiv.classList.remove('d-none');
-      errorDiv.textContent = 'Error al procesar la respuesta del servidor.';
-      console.error(error);
-      btnEliminar.disabled = false;
-      btnEliminar.innerHTML = originalText;
+    if (result.success) {
+      modalEliminar.hide();
+      cargarProfesionales();
+    } else {
+      alert('Error: ' + result.error);
     }
   });
-
-  // Al cerrar el modal, restaurar todo a su estado normal
-  document.getElementById('modalEliminar').addEventListener('hidden.bs.modal', () => {
-    const errorDiv = document.getElementById('errorEliminar');
-    errorDiv.classList.add('d-none');
-    errorDiv.textContent = '';
-
-    const btnEliminar = document.getElementById('btnConfirmarEliminar');
-    btnEliminar.classList.remove('d-none');
-    btnEliminar.disabled = false;
-    btnEliminar.innerHTML = 'Sí, eliminar';
-  });
-
-
 
   // Cargar al inicio
   cargarProfesionales();
