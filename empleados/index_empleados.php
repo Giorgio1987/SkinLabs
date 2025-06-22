@@ -80,7 +80,7 @@ if (!isset($_SESSION['empleado'])) {
                 <h5><i class="bi bi-gear me-2"></i>Administración</h5>
                 <div class="list-group">
                     <a href="profesionales/gestionar_profesionales.php" class="list-group-item list-group-item-action"><i class="bi bi-person-badge-fill"></i> Gestionar Profesionales</a>
-                    <a href="gestionar_servicios.php" class="list-group-item list-group-item-action"><i class="bi bi-tools"></i> Gestionar Servicios</a>
+                    <a href="servicios/gestionar_servicios.php" class="list-group-item list-group-item-action"><i class="bi bi-tools"></i> Gestionar Servicios</a>
                 </div>
             </div>
 

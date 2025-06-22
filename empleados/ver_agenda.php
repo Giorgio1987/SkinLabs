@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 
@@ -23,7 +22,7 @@
 
 <body class="bg-secondary">
 
-    <div class="container py-5" id="agenda-container">
+    <div class="container-fluid px-5 py-5" id="agenda-container">
         <div class="card shadow">
             <div class="card-header bg-dark text-white">
                 <h3 class="mb-0">📅 Agenda de Turnos</h3>
@@ -37,38 +36,58 @@
                 <!-- Sección de Filtros  -->
                 <div class="filter-section mb-4">
                     <form method="GET">
-                        <div class="row g-3 align-items-end">
+                        <div class="row g-2 align-items-end flex-wrap">
                             <div class="col-md-3">
                                 <label class="form-label">Cliente (nombre o DNI)</label>
-                                <input type="text" name="cliente" class="form-control" value="<?= $_GET['cliente'] ?? '' ?>">
+                                <div class="input-group">
+                                    <input type="text" name="cliente" class="form-control" value="<?= $_GET['cliente'] ?? '' ?>">
+                                    <button class="btn btn-outline-secondary limpiar-campo" type="button" data-target="cliente" title="Limpiar campo">
+                                        <i class="bi bi-x-circle"></i>
+                                    </button>
+                                </div>
                             </div>
-
                             <div class="col-md-3">
                                 <label class="form-label">Profesional</label>
-                                <select name="profesional" class="form-select" data-selected="<?= $_GET['profesional'] ?? '' ?>"></select>
+                                <div class="input-group">
+                                    <select name="profesional" class="form-select" data-selected="<?= $_GET['profesional'] ?? '' ?>"></select>
+                                    <button class="btn btn-outline-secondary limpiar-campo" type="button" data-target="profesional" title="Limpiar campo">
+                                        <i class="bi bi-x-circle"></i>
+                                    </button>
+                                </div>
                             </div>
+
 
                             <div class="col-md-3">
                                 <label class="form-label">Servicio</label>
-                                <select name="servicio" class="form-select" data-selected="<?= $_GET['servicio'] ?? '' ?>"></select>
+                                <div class="input-group">
+                                    <select name="servicio" class="form-select" data-selected="<?= $_GET['servicio'] ?? '' ?>"></select>
+                                    <button class="btn btn-outline-secondary limpiar-campo" type="button" data-target="servicio" title="Limpiar campo">
+                                        <i class="bi bi-x-circle"></i>
+                                    </button>
+                                </div>
                             </div>
+
 
                             <div class="col-md-2">
                                 <label class="form-label">Fecha específica</label>
-                                <input type="date" name="fecha" class="form-control" value="<?= $_GET['fecha'] ?? '' ?>">
+                                <div class="input-group">
+                                    <input type="date" name="fecha" class="form-control" value="<?= $_GET['fecha'] ?? '' ?>">
+                                    <button class="btn btn-outline-secondary limpiar-campo" type="button" data-target="fecha" title="Limpiar campo">
+                                        <i class="bi bi-x-circle"></i>
+                                    </button>
+                                </div>
                             </div>
 
-                            <div class="col-md-1 d-grid">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="bi bi-funnel"></i>
+
+                            <div class="col-md-auto d-flex gap-2">
+                                <button type="submit" class="btn btn-primary" title="Buscar">
+                                    <i class="bi bi-search"></i>
+                                </button>
+                                <button type="button" class="btn btn-secondary" id="btnLimpiarFiltros" title="Limpiar filtros">
+                                    <i class="bi bi-arrow-counterclockwise"></i>
                                 </button>
                             </div>
 
-                            <div class="col-md-1 d-grid">
-                                <a href="agendar_turno.php" class="btn btn-secondary">
-                                    <i class="bi bi-arrow-counterclockwise"></i>
-                                </a>
-                            </div>
                         </div>
                     </form>
 
@@ -95,7 +114,7 @@
     </div>
 
     <!-- Bootstrap JS y tu script personalizado -->
-    
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Scripts comunes -->

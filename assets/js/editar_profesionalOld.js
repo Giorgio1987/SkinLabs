@@ -17,8 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 <span class="badge" style="background-color: ${p.color};">${p.color}</span>
               </td>
               <td>
-                <button class="btn btn-sm btn-warning btn-editar" data-id="${p.id}"><i class="bi bi-pencil-fill"></i></button>
-                <button class="btn btn-sm btn-danger btn-eliminar" data-id="${p.id}" data-nombre="${p.nombre}">
+                <button class="btn btn-sm btn-warning btn-editar" data-id="${p.id_profesional}"><i class="bi bi-pencil-fill"></i></button>
+                <button class="btn btn-sm btn-danger btn-eliminar" data-id="${p.id_profesional}" data-nombre="${p.nombre}">
                   <i class="bi bi-trash-fill"></i>
                 </button>
               </td>
