@@ -140,3 +140,16 @@ INSERT INTO citas (nombre, telefono, servicio, fecha, hora, dni, consultorio_id,
 ('Sofía Álvarez', '1133445566', 'Masajes relajantes', '2025-12-05', '09:00:00', '33876543', 3, 3),
 ('Mariano Pérez', '1122334455', 'Manicura completa', '2025-12-10', '11:15:00', '32987654', 3, 4),
 ('Natalia Suárez', '1177665544', 'Consulta dermatológica', '2025-12-15', '13:00:00', '31234567', 1, 1);
+
+CREATE TABLE servicios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    descripcion TEXT,
+    activo TINYINT(1) DEFAULT 1,
+    imagen VARCHAR(255)
+);
+INSERT INTO servicios (nombre, descripcion, imagen) VALUES
+('Tratamientos faciales', 'Tratamientos personalizados para cada tipo de piel, utilizando productos de alta calidad.', 'facial.png'),
+('Masajes relajantes', 'Técnicas especializadas para aliviar el estrés y la tensión muscular.', 'masajes.jpg'),
+('Cuidado corporal', 'Tratamientos corporales rejuvenecedores para una piel suave y radiante.', 'corporal.jpg'),
+('Depilación', 'Técnicas avanzadas y seguras para una piel perfectamente suave.', 'depilacion.jpg');
