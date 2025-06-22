@@ -74,24 +74,69 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Envío del formulario de eliminación con AJAX
+  // Envío del formulario de eliminación con AJAX
   document.getElementById('formEliminarProfesional').addEventListener('submit', async function (e) {
     e.preventDefault();
 
     const formData = new FormData(this);
-    const response = await fetch('eliminar_profesional.php', {
-      method: 'POST',
-      body: formData
-    });
+    const modal = document.getElementById('modalEliminar');
+    const errorDiv = document.getElementById('errorEliminar');
+    const btnEliminar = document.getElementById('btnConfirmarEliminar');
 
-    const result = await response.json();
+    // Mostrar "Procesando..." y desactivar botón
+    btnEliminar.disabled = true;
+    const originalText = btnEliminar.innerHTML;
+    btnEliminar.innerHTML = 'Procesando...';
 
-    if (result.success) {
-      modalEliminar.hide();
-      cargarProfesionales();
-    } else {
-      alert('Error: ' + result.error);
+    try {
+      const response = await fetch('eliminar_profesional.php', {
+        method: 'POST',
+        body: formData
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        bootstrap.Modal.getInstance(modal).hide();
+        cargarProfesionales();
+        errorDiv.classList.add('d-none');
+        errorDiv.textContent = '';
+        btnEliminar.disabled = false;
+        btnEliminar.innerHTML = originalText;
+      } else {
+        // Mostrar error, ocultar botón, cerrar modal después
+        errorDiv.classList.remove('d-none');
+        errorDiv.textContent = result.error || 'Error desconocido al eliminar.';
+
+        btnEliminar.classList.add('d-none');
+
+        setTimeout(() => {
+          bootstrap.Modal.getInstance(modal).hide();
+        }, 3000);
+      }
+
+    } catch (error) {
+      errorDiv.classList.remove('d-none');
+      errorDiv.textContent = 'Error al procesar la respuesta del servidor.';
+      console.error(error);
+      btnEliminar.disabled = false;
+      btnEliminar.innerHTML = originalText;
     }
   });
+
+  // Al cerrar el modal, restaurar todo a su estado normal
+  document.getElementById('modalEliminar').addEventListener('hidden.bs.modal', () => {
+    const errorDiv = document.getElementById('errorEliminar');
+    errorDiv.classList.add('d-none');
+    errorDiv.textContent = '';
+
+    const btnEliminar = document.getElementById('btnConfirmarEliminar');
+    btnEliminar.classList.remove('d-none');
+    btnEliminar.disabled = false;
+    btnEliminar.innerHTML = 'Sí, eliminar';
+  });
+
+
 
   // Cargar al inicio
   cargarProfesionales();
