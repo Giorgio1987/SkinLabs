@@ -404,7 +404,6 @@ form {
 }
 
 .btn-primary::after {
-  content: "💾";
   position: absolute;
   right: 15px;
   opacity: 0;
@@ -442,7 +441,6 @@ form {
 }
 
 .btn-secondary::after {
-  content: "🔙";
   position: absolute;
   left: 15px;
   opacity: 0;

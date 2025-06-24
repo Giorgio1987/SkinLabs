@@ -241,23 +241,19 @@ function handleSaveSubmit(button, event) {
     return
   }
 
-  // Mostrar efectos de guardado
-  event.preventDefault()
+  // Si llegamos aquí, todo está bien - mostrar efectos pero permitir envío natural
   const originalText = button.innerHTML
   button.innerHTML = `
         <span class="spinner-border spinner-border-sm me-2"></span>
         <span>Guardando cambios...</span>
         <span style="margin-left: 10px;">💾</span>
     `
-  button.disabled = true
 
   // Crear efecto de guardado
   createSaveEffect()
 
-  // Enviar formulario después del efecto
-  setTimeout(() => {
-    form.submit()
-  }, 1200)
+  // NO prevenir el envío - dejar que el formulario se envíe naturalmente
+  // El botón mantendrá el estado de "guardando" hasta que la página se recargue
 }
 
 // Configurar validación en tiempo real
@@ -364,6 +360,7 @@ function setupChangeDetection() {
   const inputs = document.querySelectorAll(".form-control:not([readonly])")
   const originalValues = {}
   let changesIndicator = null
+  let isSubmitting = false // Nueva variable para controlar el envío
 
   // Guardar valores originales
   inputs.forEach((input) => {
@@ -402,8 +399,21 @@ function setupChangeDetection() {
     })
   })
 
-  // Advertir antes de salir si hay cambios
+  // Detectar cuando se envía el formulario para deshabilitar la advertencia
+  const form = document.querySelector("form")
+  if (form) {
+    form.addEventListener("submit", () => {
+      isSubmitting = true
+    })
+  }
+
+  // Advertir antes de salir si hay cambios (SOLO si no se está enviando)
   window.addEventListener("beforeunload", (e) => {
+    // Si se está enviando el formulario, no mostrar advertencia
+    if (isSubmitting) {
+      return
+    }
+
     const hasChanges = Array.from(inputs).some((inp) => inp.value !== originalValues[inp.name])
 
     if (hasChanges) {
