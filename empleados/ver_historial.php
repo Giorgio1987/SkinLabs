@@ -41,6 +41,7 @@ if (!$resultado) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="container mt-4">
+    <?php include "../Includes/navbar.php"; ?>
     <h2 class="mb-4">📋 Historial Completo de Pacientes</h2>
     <a href="index_empleados.php" class="btn btn-secondary mb-3">← Volver al Menú</a>
     <table class="table table-bordered">

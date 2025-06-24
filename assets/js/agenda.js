@@ -34,16 +34,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     .then(successCallback)
                     .catch(failureCallback);
             },
-            // eventDataTransform: function (eventData) {
-            //     console.log('Evento recibido:', eventData);
-            //     return eventData;
-            // },
             eventClick: function (info) {
                 mostrarDetalleTurno(info);
             }
         });
 
-        // Mostrar/ocultar botón de limpiar según si hay contenido
+        // Mostrar/ocultar botón de limpiar
         function actualizarVisibilidadLimpiar() {
             document.querySelectorAll('.limpiar-campo').forEach(btn => {
                 const target = btn.dataset.target;
@@ -55,16 +51,13 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
 
-        // Ejecutar al cargar
         actualizarVisibilidadLimpiar();
 
-        // Detectar cambios
         document.querySelectorAll('input, select').forEach(input => {
             input.addEventListener('input', actualizarVisibilidadLimpiar);
             input.addEventListener('change', actualizarVisibilidadLimpiar);
         });
 
-        // Limpiar valor y ocultar botón
         document.querySelectorAll('.limpiar-campo').forEach(btn => {
             btn.addEventListener('click', function () {
                 const target = this.dataset.target;
@@ -72,12 +65,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (campo) {
                     campo.value = '';
                     campo.dispatchEvent(new Event('input'));
-                    campo.dispatchEvent(new Event('change')); // Asegura visibilidad en selects
+                    campo.dispatchEvent(new Event('change'));
                 }
             });
         });
-
-
 
         calendar.render();
     }
@@ -134,39 +125,34 @@ document.addEventListener('DOMContentLoaded', function () {
     // Cargar datos para los filtros
     async function cargarDatosFiltros() {
         try {
-            // Cargar profesionales
             const resProf = await fetch('profesionales/get_profesionales.php');
             profesionales = await resProf.json();
 
-            // Cargar servicios
             const resServ = await fetch('servicios/get_servicios.php');
             servicios = await resServ.json();
 
-            // Actualizar selects
             actualizarSelects();
         } catch (error) {
             console.error('Error cargando filtros:', error);
         }
     }
+
     function actualizarSelects() {
         const selectProf = document.querySelector('select[name="profesional"]');
         const selectServ = document.querySelector('select[name="servicio"]');
 
-        // Profesionales
         selectProf.innerHTML = '<option value="">Todos los profesionales</option>';
         profesionales.forEach(prof => {
             const selected = prof.id == selectProf.dataset.selected ? 'selected' : '';
             selectProf.innerHTML += `<option value="${prof.id}" ${selected}>${prof.nombre}</option>`;
         });
 
-        // Servicios
         selectServ.innerHTML = '<option value="">Todos los servicios</option>';
         servicios.forEach(serv => {
             const selected = serv.nombre == selectServ.dataset.selected ? 'selected' : '';
             selectServ.innerHTML += `<option value="${serv.nombre}" ${selected}>${serv.nombre}</option>`;
         });
     }
-
 
     // Configurar eventos de los filtros
     function configurarEventosFiltros() {
@@ -177,20 +163,12 @@ document.addEventListener('DOMContentLoaded', function () {
         formFiltros.addEventListener('submit', function (e) {
             e.preventDefault();
 
-            const fechaSeleccionada = document.querySelector('input[name="fecha"]').value;
-
-            if (fechaSeleccionada) {
-                calendar.gotoDate(fechaSeleccionada);
-                calendar.changeView('listDay');
-            } else {
-                calendar.gotoDate(new Date());
-                calendar.changeView('listWeek');
-            }
-
+            // Mostrar siempre la vista mensual al aplicar filtros
+            calendar.gotoDate(new Date());
+            calendar.changeView('dayGridMonth');
             calendar.refetchEvents();
         });
 
-        // Botón de limpiar todos los filtros sin recargar
         if (btnLimpiar) {
             btnLimpiar.addEventListener('click', function () {
                 document.querySelector('input[name="cliente"]').value = '';
@@ -199,24 +177,24 @@ document.addEventListener('DOMContentLoaded', function () {
                 document.querySelector('input[name="fecha"]').value = '';
 
                 calendar.gotoDate(new Date());
-                calendar.changeView('listWeek');
+                calendar.changeView('listDay');
                 calendar.refetchEvents();
 
-                // Actualizar visibilidad de botones ✖
                 actualizarVisibilidadLimpiar();
             });
         }
 
-        // Botón alternativo si querés resetear desde un enlace (confirmación incluida)
-        btnReset.addEventListener('click', function (e) {
-            if (!confirm('¿Restablecer todos los filtros?')) {
-                e.preventDefault();
-                return;
-            }
+        btnReset.addEventListener('click', function () {
+            document.querySelector('input[name="cliente"]').value = '';
+            document.querySelector('select[name="profesional"]').selectedIndex = 0;
+            document.querySelector('select[name="servicio"]').selectedIndex = 0;
+            document.querySelector('input[name="fecha"]').value = '';
+
+            calendar.gotoDate(new Date());
+            calendar.changeView('listDay');
+            calendar.refetchEvents();
         });
     }
-
-
 
     // Inicializar la aplicación
     async function init() {
