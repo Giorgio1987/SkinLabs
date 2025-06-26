@@ -130,6 +130,8 @@ if (!empty($_POST['fecha']) && !empty($_POST['profesional_id']) && !empty($_POST
 <head>
     <meta charset="UTF-8">
     <title>Agendar Turno - SkinLabs</title>
+    <link rel="stylesheet" href="../assets/css/agendar_turno.css">
+    <link rel="icon" type="image/png" href="../assets/img/favicon.png" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
@@ -223,5 +225,6 @@ if (!empty($_POST['fecha']) && !empty($_POST['profesional_id']) && !empty($_POST
         </div>
     </div>
 </div>
+<script src="../assets/js/agendar_turno.js"></script>
 </body>
 </html>
