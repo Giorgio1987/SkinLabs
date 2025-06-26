@@ -22,7 +22,7 @@
 </head>
 
 <body class="bg-secondary">
-
+<?php include "../Includes/navbar.php"; ?>
     <div class="container-fluid px-5 py-5" id="agenda-container">
         <div class="card shadow">
             <div class="card-header bg-dark text-white">
@@ -31,7 +31,7 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <a href="index_empleados.php" class="btn btn-secondary">Volver al Menú</a>
-                    <a href="agendar_turno.php" class="btn btn-secondary">➕ Agendar nuevo turno</a>
+                    <a href="agendar_turno.php?volver=agenda" class="btn btn-secondary">➕ Agendar nuevo turno</a>
                 </div>
 
                 <!-- Sección de Filtros  -->

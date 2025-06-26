@@ -43,6 +43,7 @@ if (!$resultado) {
     <link rel="icon" type="image/png" href="../assets/img/favicon.png" />
 </head>
 <body class="container mt-4">
+    <?php include "../Includes/navbar.php"; ?>
     <h2 class="mb-4">📋 Historial Completo de Pacientes</h2>
     <a href="index_empleados.php" class="btn btn-secondary mb-3">← Volver al Menú</a>
     <table class="table table-bordered">

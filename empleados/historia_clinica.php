@@ -54,6 +54,7 @@ if (isset($_GET['dni']) && !empty($_GET['dni'])) {
     <link rel="icon" type="image/png" href="../assets/img/favicon.png" />
 </head>
 <body class="bg-light">
+    <?php include "../Includes/navbar.php"; ?>
     <div class="container py-5">
         <h2 class="mb-4">Historial Clínico del Paciente</h2>
 

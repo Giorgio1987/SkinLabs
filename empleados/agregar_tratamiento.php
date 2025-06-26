@@ -27,6 +27,7 @@ include("../php/conexion.php");
     <link rel="icon" type="image/png" href="../assets/img/favicon.png" />
 </head>
 <body class="bg-light">
+<?php include "../Includes/navbar.php"; ?>
 <div class="container py-5">
     <div class="card shadow">
         <div class="card-header bg-primary text-white">
