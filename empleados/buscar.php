@@ -22,6 +22,8 @@ include("../php/conexion.php");
     <meta charset="UTF-8">
     <title>Buscar Paciente</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/buscar.css">
+    <link rel="icon" type="image/png" href="../assets/img/favicon.png" />
 </head>
 <body class="bg-light">
     <?php include "../Includes/navbar.php"; ?>
@@ -66,5 +68,7 @@ include("../php/conexion.php");
             </div>
         </div>
     </div>
+
+    <script src="../assets/js/buscar.js"></script>
 </body>
 </html>

@@ -39,6 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Cancelar Turno Individual - Panel Empleados</title>
+    <link rel="stylesheet" href="../assets/css/eliminar_turno.css">
+    <link rel="icon" type="image/png" href="../assets/img/favicon.png"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
@@ -46,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div class="container py-5">
     <div class="card shadow">
         <div class="card-header bg-danger text-white">
-            <h3>❌ Cancelar Turno Individual</h3>
+            <h3>Cancelar Turno Individual</h3>
         </div>
         <div class="card-body">
             <?php if (!empty($mensaje)) echo $mensaje; ?>
@@ -96,5 +98,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </div>
 </div>
+<script src="../assets/js/eliminar_turno.js"></script>
 </body>
 </html>
