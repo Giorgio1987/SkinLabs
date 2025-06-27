@@ -205,20 +205,7 @@ if (!empty($_POST['fecha']) && !empty($_POST['profesional_id']) && !empty($_POST
         </div>
     </div>
 </div>
-<script src="../assets/js/agendar_turno.js"></script>
-                    <!-- <button type="submit" class="btn btn-success">Agendar turno</button>
-                    <?php
-                  //$volver_a = 'index_empleados.php';
-                   //f (isset($_GET['volver']) && $_GET['volver'] === 'agenda') {
-                //      $volver_a = 'ver_agenda.php';
-                   //
-                    ?>
-                    <a href="<?= $volver_a ?>" class="btn btn-secondary">Volver</a> -->
-
-                </form>
-            </div>
-        </div>
-    </div>
+    <script src="../assets/js/agendar_turno.js"></script>
 </body>
 
 </html>
