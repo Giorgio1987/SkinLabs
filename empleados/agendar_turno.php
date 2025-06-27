@@ -107,6 +107,11 @@ if (!empty($_POST['fecha']) && !empty($_POST['profesional_id']) && !empty($_POST
     <link rel="icon" type="image/png" href="../assets/img/favicon.png" />
     <link rel="stylesheet" href="../assets/css/navbar.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/2025/SkinLabs/assets/css/navbar.css">
+    <!-- Tipografías -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins&display=swap" rel="stylesheet">
+
+
 </head>
 
 <body class="bg-light">
@@ -189,7 +194,7 @@ if (!empty($_POST['fecha']) && !empty($_POST['profesional_id']) && !empty($_POST
                         </select>
                     </div>
 
-               <!--  <div class="mb-3">
+                    <!--  <div class="mb-3">
                     <label class="form-label">Hora</label>
                     <input type="time" name="hora" class="form-control" step="1800" required>
                     <small class="text-muted">Turnos cada 30 minutos entre 9:00 y 18:00</small>
