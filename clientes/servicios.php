@@ -44,6 +44,13 @@
     </div>
   </nav>
 
+  <div class="position-fixed" style="top: 100px; left: 20px; z-index: 1050;">
+    <a href="../index.php" class="btn btn-light border-0 shadow-sm rounded-pill px-4 py-2" 
+      style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(8px); color: #faf8ff; font-weight: 600;">
+      ← Volver al inicio
+    </a>
+  </div>
+
   <!-- Hero Section -->
   <section class="hero-section" id="inicio">
     <div class="hero-overlay"></div>

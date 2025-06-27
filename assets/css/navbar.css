@@ -1,55 +1,31 @@
 .navbar {
-  background: rgba(56, 26, 75, 0.95) !important;
-  backdrop-filter: blur(15px);
-  border-bottom: 1px solid rgba(243, 205, 200, 0.1);
-  box-shadow: 0 4px 20px var(--sombra-media);
-  padding: 15px 0;
-  transition: all 0.3s ease;
+    background: linear-gradient(135deg, #773575, #542668) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    border-bottom: 2px solid #f3cdc8;
+    font-family: 'Poppins', sans-serif;
 }
 
 .navbar-brand {
-  font-family: "Playfair Display", serif;
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: var(--rosa-melocoton) !important;
-  text-decoration: none;
-  transition: all 0.3s ease;
-}
-
-.navbar-brand:hover {
-  color: var(--coral-salmon) !important;
-  transform: scale(1.05);
-}
-
-.navbar-brand i {
-  background: linear-gradient(135deg, var(--coral-salmon), var(--rosa-empolvado));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-right: 10px;
+    font-weight: 600;
+    color: #f3cdc8 !important;
+    font-size: 1.4rem;
 }
 
 .navbar-text {
-  color: var(--blanco-cosmico) !important;
-  font-weight: 500;
-  padding: 8px 15px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  border: 1px solid rgba(243, 205, 200, 0.2);
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
+    font-weight: 400;
+    color: #faf8ff !important;
 }
 
-.navbar-text:hover {
-  background: rgba(255, 255, 255, 0.15);
-  transform: translateY(-2px);
+.navbar .btn-danger {
+    background: linear-gradient(135deg, #f8af99, #e79198);
+    border: none;
+    border-radius: 30px;
+    font-weight: bold;
+    color: white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
-.navbar-text i {
-  color: var(--coral-salmon);
-  margin-right: 8px;
-}
-
-.btn-danger {
-  text-transform: none !important;
+.navbar .btn-danger:hover {
+    background: linear-gradient(135deg, #e79198, #d6707d);
+    color: white;
 }

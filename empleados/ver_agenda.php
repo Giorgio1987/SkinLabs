@@ -19,6 +19,7 @@
     <!-- Nuestros estilos -->
     <link rel="icon" type="image/png" href="../assets/img/favicon.png" />
     <link rel="stylesheet" href="../assets/css/ver_agenda.css">
+    <link rel="stylesheet" href="../assets/css/navbar.css">
 </head>
 
 <body class="bg-secondary">

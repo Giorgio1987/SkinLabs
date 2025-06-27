@@ -936,3 +936,33 @@ html {
         text-align: center !important;
     }
 }
+
+
+.btn-back-wrapper {
+  position: fixed;
+  top: 100px;
+  left: 20px;
+  z-index: 9999;
+}
+
+.btn-back-home {
+  background: rgba(243, 205, 200, 0.15); /* tono melocotón translúcido */
+  color: var(--blanco-cosmico);
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 30px;
+  text-decoration: none;
+  font-family: 'Poppins', sans-serif;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.btn-back-home:hover {
+  background: rgba(248, 175, 153, 0.3); /* coral-salmon más visible */
+  transform: scale(1.05);
+  color: var(--rosa-melocoton);
+  text-decoration: none;
+}
