@@ -1,0 +1,31 @@
+.navbar {
+    background: linear-gradient(135deg, #773575, #542668) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    border-bottom: 2px solid #f3cdc8;
+    font-family: 'Poppins', sans-serif;
+}
+
+.navbar-brand {
+    font-weight: 600;
+    color: #f3cdc8 !important;
+    font-size: 1.4rem;
+}
+
+.navbar-text {
+    font-weight: 400;
+    color: #faf8ff !important;
+}
+
+.navbar .btn-danger {
+    background: linear-gradient(135deg, #f8af99, #e79198);
+    border: none;
+    border-radius: 30px;
+    font-weight: bold;
+    color: white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.navbar .btn-danger:hover {
+    background: linear-gradient(135deg, #e79198, #d6707d);
+    color: white;
+}

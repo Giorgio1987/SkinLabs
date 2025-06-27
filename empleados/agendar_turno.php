@@ -105,6 +105,7 @@ if (!empty($_POST['fecha']) && !empty($_POST['profesional_id']) && !empty($_POST
     <title>Agendar Turno - SkinLabs</title>
     <link rel="stylesheet" href="../assets/css/agendar_turno.css">
     <link rel="icon" type="image/png" href="../assets/img/favicon.png" />
+    <link rel="stylesheet" href="../assets/css/navbar.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
@@ -200,14 +201,14 @@ if (!empty($_POST['fecha']) && !empty($_POST['profesional_id']) && !empty($_POST
     </div>
 </div>
 <script src="../assets/js/agendar_turno.js"></script>
-                    <button type="submit" class="btn btn-success">Agendar turno</button>
+                    <!-- <button type="submit" class="btn btn-success">Agendar turno</button>
                     <?php
-                    $volver_a = 'index_empleados.php';
-                    if (isset($_GET['volver']) && $_GET['volver'] === 'agenda') {
-                        $volver_a = 'ver_agenda.php';
-                    }
+                  //$volver_a = 'index_empleados.php';
+                   //f (isset($_GET['volver']) && $_GET['volver'] === 'agenda') {
+                //      $volver_a = 'ver_agenda.php';
+                   //
                     ?>
-                    <a href="<?= $volver_a ?>" class="btn btn-secondary">Volver</a>
+                    <a href="<?= $volver_a ?>" class="btn btn-secondary">Volver</a> -->
 
                 </form>
             </div>

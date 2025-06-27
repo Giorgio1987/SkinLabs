@@ -75,7 +75,7 @@ header("Pragma: no-cache");
                     <span class="animated-gradient-text">Bienvenido a tu espacio de bienestar</span>
                 </h1>
                
-                <p class="elegant-phrase">Donde la belleza se encuentra con la ciencia, y cada tratamiento es una experiencia única diseñada especialmente para ti.</p>
+                <p class="elegant-phrase animate-in">Donde la belleza se encuentra con la ciencia, y cada tratamiento es una experiencia única diseñada especialmente para ti.</p>
 
                 <!-- Action Buttons -->
                 <div class="action-buttons">

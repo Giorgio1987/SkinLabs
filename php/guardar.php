@@ -40,17 +40,22 @@ $verificar_dni->close();
 
 // Mostrar errores si hay
 if (!empty($errores)) {
-    echo "<!DOCTYPE html><html lang='es'><head>
-            <meta charset='UTF-8'>
-            <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css' rel='stylesheet'>
+    echo '<!DOCTYPE html><html lang="es"><head>
+            <meta charset="UTF-8">
+            <link href="../assets/css/guardar.css" rel="stylesheet">
+            <link rel="icon" type="image/png" href="../assets/img/favicon.png" />
             <title>Error al guardar</title>
-          </head><body class='bg-light'>
-          <div class='container py-5'>
-            <div class='alert alert-danger'><h4>❌ Errores al guardar el paciente:</h4><ul>";
+          </head><body class="bg-light">
+          <div class="container py-5">
+            <div class="alert alert-danger">
+              <h4>❌ Errores al guardar el paciente:</h4>
+              <ul>';
     foreach ($errores as $error) {
-        echo "<li>" . htmlspecialchars($error) . "</li>";
+        echo '<li>' . htmlspecialchars($error) . '</li>';
     }
-    echo "</ul><a href='../nuevo_paciente.php' class='btn btn-secondary mt-3'>Volver al formulario</a></div></div></body></html>";
+    echo '</ul>
+            <a href="../empleados/nuevo.php" class="btn btn-secondary mt-3">Volver al formulario</a>
+          </div></div></body></html>';
     exit;
 }
 
@@ -67,7 +72,7 @@ if ($stmt->execute()) {
     echo "<div class='alert alert-danger'>
             <h4>❌ Error al guardar el paciente:</h4>
             <p>" . htmlspecialchars($conexion->error) . "</p>
-            <a href='../nuevo_paciente.php' class='btn btn-secondary'>Volver al formulario</a>
+            <a href='../empleados/nuevo.php' class='btn btn-secondary mt-3'>Volver al formulario</a>
           </div>";
 }
 
