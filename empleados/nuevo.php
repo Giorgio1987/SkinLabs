@@ -29,6 +29,7 @@ if (isset($_GET['msg'])) {
     <link rel="stylesheet" href="../assets/css/nuevo.css">
 </head>
 <body class="bg-light">
+     <?php include "../Includes/navbar.php"; ?>
     <div class="container py-5">
         <div class="card shadow">
             <div class="card-header bg-primary text-white">
