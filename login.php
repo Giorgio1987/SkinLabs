@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once "php/conexion.php"; // ajustá si está en otra ruta
 
 // Si el usuario ya inició sesión, redirigirlo
 if (isset($_SESSION['empleado'])) {
@@ -13,14 +14,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $usuario = trim($_POST['usuario']);
     $clave = trim($_POST['clave']);
 
-    // Verificar credenciales hardcodeadas (admin/1234)
-    if ($usuario === 'admin' && $clave === '1234') {
-        $_SESSION['empleado'] = $usuario;
-        header("Location: empleados/index_empleados.php");
-        exit;
-    } else {
-        $error = "Usuario o contraseña incorrectos.";
+    if (!empty($usuario) && !empty($clave)) {
+        $stmt = $conexion->prepare("SELECT * FROM empleados WHERE usuario = ?");
+        $stmt->bind_param("s", $usuario);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+
+        if ($resultado && $resultado->num_rows === 1) {
+            $empleado = $resultado->fetch_assoc();
+            if (password_verify($clave, $empleado['clave'])) {
+                $_SESSION['empleado'] = $empleado['usuario'];
+                header("Location: empleados/index_empleados.php");
+                exit;
+            }
+        }
     }
+
+    $error = "Usuario o contraseña incorrectos.";
 }
 ?>
 

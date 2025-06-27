@@ -106,6 +106,11 @@ if (!empty($_POST['fecha']) && !empty($_POST['profesional_id']) && !empty($_POST
     <link rel="stylesheet" href="../assets/css/agendar_turno.css">
     <link rel="icon" type="image/png" href="../assets/img/favicon.png" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/2025/SkinLabs/assets/css/navbar.css">
+    <!-- Tipografías -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins&display=swap" rel="stylesheet">
+
+
 </head>
 
 <body class="bg-light">
@@ -188,30 +193,30 @@ if (!empty($_POST['fecha']) && !empty($_POST['profesional_id']) && !empty($_POST
                         </select>
                     </div>
 
-               <!--  <div class="mb-3">
+                    <!--  <div class="mb-3">
                     <label class="form-label">Hora</label>
                     <input type="time" name="hora" class="form-control" step="1800" required>
                     <small class="text-muted">Turnos cada 30 minutos entre 9:00 y 18:00</small>
                 </div> -->
-                <button type="submit" class="btn btn-success">Agendar turno</button>
-                <a href="index_empleados.php" class="btn btn-secondary">Volver</a>
-            </form>
-        </div>
-    </div>
-</div>
-<script src="../assets/js/agendar_turno.js"></script>
                     <button type="submit" class="btn btn-success">Agendar turno</button>
-                    <?php
-                    $volver_a = 'index_empleados.php';
-                    if (isset($_GET['volver']) && $_GET['volver'] === 'agenda') {
-                        $volver_a = 'ver_agenda.php';
-                    }
-                    ?>
-                    <a href="<?= $volver_a ?>" class="btn btn-secondary">Volver</a>
-
+                    <a href="index_empleados.php" class="btn btn-secondary">Volver</a>
                 </form>
             </div>
         </div>
+    </div>
+    <script src="../assets/js/agendar_turno.js"></script>
+    <button type="submit" class="btn btn-success">Agendar turno</button>
+    <?php
+    $volver_a = 'index_empleados.php';
+    if (isset($_GET['volver']) && $_GET['volver'] === 'agenda') {
+        $volver_a = 'ver_agenda.php';
+    }
+    ?>
+    <a href="<?= $volver_a ?>" class="btn btn-secondary">Volver</a>
+
+    </form>
+    </div>
+    </div>
     </div>
 </body>
 
